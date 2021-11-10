@@ -15,3 +15,9 @@ Se busca un programa para llevar un control sobre las sucursales, stock y presta
 - [ ] Mostrar lista de Libros retirados por Usuario y su plazo de devolucion
 
 
+## CORRECCION DOCENTE
+- [ ] Contabilizar cantidad de Usuarios por tipo de Suscripcion  
+- [ ] Contabilizar cantidad de Usuarios por Sucursales
+- [ ] Contabilizar Libros mas Retiro por Sucursal y General\
+- [ ] Contabilizar retiros por Usuarios y rankearlos
+- [ ] Contabilizar cantidad de retiros por Sucursal
