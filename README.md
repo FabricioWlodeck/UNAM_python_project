@@ -16,6 +16,8 @@ Se busca un programa para llevar un control sobre las sucursales, stock y presta
 
 
 ## CORRECCION DOCENTE
+- [ ] INTERFAZ PARA INTERACCION USUARIO ??????? 
+
 - [X] Contabilizar cantidad de Usuarios por tipo de Suscripcion  
 - [X] Contabilizar cantidad de Usuarios por Sucursales
 - [ ] Contabilizar Libros mas Retiro por Sucursal y General\
