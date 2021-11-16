@@ -2,11 +2,10 @@ from suscripcion import Suscripcion
 
 
 # requerimientos = {'certicado_alumno': True, }
-class Suscripcion_estandar(Suscripcion):
-    def __init__(self, costo_suscripcion=None, duracion_suscripcion=None, libros_para_retirar=None, fecha_suscripcion=None, fecha_vencimiento=None, cantidad_usuarios=None):
+class Suscripcion_alumno(Suscripcion):
+    def __init__(self, costo_suscripcion=500, duracion_suscripcion= 12, libros_para_retirar= 5, fecha_suscripcion=None, fecha_vencimiento=None, cantidad_usuarios=None):
         Suscripcion.__init__(self, costo_suscripcion, duracion_suscripcion, libros_para_retirar, fecha_suscripcion, fecha_vencimiento, cantidad_usuarios)
-        self.__costo_suscripcion = 750 # $750
-        self.__requerimiento_es_alumno = False
+        self.__requerimiento_es_alumno = True
 
     @property
     def requerimientos_es_alumno(self):
@@ -17,5 +16,5 @@ class Suscripcion_estandar(Suscripcion):
         self.__requerimiento_es_alumno = value
 
     def __str__(self):
-        texto = (f'Suscripcion estandar para cualquier tipo de lector')
+        texto = print(f'Suscripcion exclusiva para estudiantes')
         return texto
