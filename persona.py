@@ -1,6 +1,6 @@
 class Persona():
     def __init__(self, nombre_cuenta, contrasenia, nombre, apellido, edad):
-        self.__nombre_usuario = nombre_cuenta
+        self.__nombre_cuenta = nombre_cuenta
         self.__contrasenia = contrasenia
         self.__nombre = nombre
         self.__apellido = apellido
@@ -8,10 +8,10 @@ class Persona():
 
     @property
     def nombre_cuenta(self):
-        return self.__nombre_usuario
+        return self.__nombre_cuenta
 
     @nombre_cuenta.setter
-    def nombre_usuario(self,value):
+    def nombre_cuenta(self,value):
         self.__nombre_cuenta = value
 
     @property

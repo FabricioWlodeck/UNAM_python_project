@@ -25,7 +25,7 @@ class Usuario(Persona):
         self.__libros_retirados = value
 
     def __str__(self):
-        texto = (f'{self.nombre}, {self.apellido}')
+        texto = (f'{self.nombre}, {self.apellido} \nSuscripcion: {self.tipo_suscripcion}')
         return texto
 
     def listado_libros(self):

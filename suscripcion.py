@@ -1,11 +1,11 @@
 class Suscripcion():
-    def __init__(self, costo_suscripcion, duracion_suscripcion,  libros_para_retirar, fecha_suscripcion, fecha_vencimiento, cantidad_usuarios):
+    def __init__(self, costo_suscripcion, duracion_suscripcion,  libros_para_retirar, fecha_suscripcion, fecha_vencimiento):
         self.__costo_suscripcion = costo_suscripcion
         self.__duracion_suscripcion = duracion_suscripcion
         self.__libros_para_retirar = libros_para_retirar
         self.__fecha_suscripcion = fecha_suscripcion
         self.__fecha_vencimiento = fecha_vencimiento
-        self.__cantidad_usuarios = cantidad_usuarios
+        
 
     @property
     def costo_suscripcion(self):
@@ -45,12 +45,5 @@ class Suscripcion():
 
     @fecha_vencimiento.setter
     def fecha_vencimiento(self, value):
-        Self.__fecha_vencimiento = value
+        self.__fecha_vencimiento = value
 
-    @property
-    def cantidad_usuarios(self):
-        return self.__cantidad_usuarios
-
-    @cantidad_usuarios.setter
-    def cantidad_usuarios(self, value):
-        self.__cantidad_usuarios = value
