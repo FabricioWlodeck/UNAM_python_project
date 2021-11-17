@@ -28,9 +28,9 @@ class Usuario(Persona):
         texto = (f'{self.nombre}, {self.apellido} \nSuscripcion: {self.tipo_suscripcion}')
         return texto
 
-    def listado_libros(self):
+    def listado_libros_usuario(self):
         contador = 1 
-        print(f'---LIBROS RETIRADOS POR {self.nombre_cuenta}---')
+        print(f'\n---LIBROS RETIRADOS POR {self.nombre_cuenta}---')
         for libros in self.__libros_retirados:
-            print(f'({contador}) {libros}')
+            print(f'{libros} - ')
             contador += contador

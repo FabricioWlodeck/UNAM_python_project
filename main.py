@@ -31,8 +31,9 @@ def main():
     sucursal_posadas.nuevo_libro(libro_2)
     sucursal_posadas.nuevo_libro(libro_3)
     
-    sucursal_posadas.retirar_libro(libro_2.nombre,usuario_1.nombre_cuenta)
-    sucursal_posadas.retirar_libro(libro_2.nombre,usuario_2.nombre_cuenta)
+    #sucursal_posadas.retirar_libro(libro_2.nombre,usuario_1.nombre_cuenta)
+    sucursal_posadas.retirar_libro(libro_1.nombre,usuario_1.nombre_cuenta)
+    #sucursal_posadas.retirar_libro(libro_1.nombre,usuario_2.nombre_cuenta)
     sucursal_posadas.usuarios_por_suscripcion()
     sucursal_posadas.empleados_sucursal()
 
@@ -46,8 +47,9 @@ def main():
     sucursal_posadas.empleados_sucursal() """
     sucursal_posadas.dinero_recaudado()
 
-    sucursal_posadas.devolver_libro(libro_2.nombre,usuario_2.nombre_cuenta)
+    sucursal_posadas.devolver_libro(libro_1.nombre,usuario_1.nombre_cuenta)
     sucursal_posadas.listado_libros()
+
     #usuario_1.listado_libros()
 
 if __name__ == '__main__':

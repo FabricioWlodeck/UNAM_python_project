@@ -86,7 +86,7 @@ class Sucursal():
             if libro.nombre == libro_buscar:
                 if libro.cantidad_disponible >= 1:
                     condicion = True
-                    libro.cantidad_disponible -= libro.cantidad_disponible
+                    libro.cantidad_disponible = libro.cantidad_disponible - 1
                     libro.unidades_prestadas = libro.unidades_prestadas + 1
                     for usuario in self.__usuarios:
                         if usuario.nombre_cuenta == usuario_nombre:
@@ -97,10 +97,9 @@ class Sucursal():
                             else:
                                 margen_dias = datetime.timedelta(days=28)
                             libro.fecha_devolucion = fecha_actual + margen_dias
-                            print(f'Se tendra que devolver dentro de {libro.fecha_devolucion}')
+                            print(f'Se ha retirado el libro: {libro}. Fecha de devolucion: {libro.fecha_devolucion} [{margen_dias.days} dias]')
                             print(
                                 f'Libro: {libro.nombre} retirado exitosamente')
-                            return print(f'Se ha retirado el libro: {libro}.')
         if condicion == False:
             print(f'(No se cuenta con unidades para realizar el retiro)')
             # usuario con la fecha de devolucion mas proxima
@@ -121,18 +120,19 @@ class Sucursal():
     def devolver_libro(self, libro_en_devolucion,usuario_nombre):
         contador = 1
         for usuario in self.__usuarios:
-            #print(f'\n\tUsuario: {usuario.nombre_cuenta}\n\tLibro buscado: {libro_en_devolucion}')
-            #print(f'\n\t{usuario_nombre}')
             if usuario.nombre_cuenta == usuario_nombre: #DA PROBLEMAAAAAAAAAASSSSSSSSSSSSSSS!!!!!!!!!!
+                usuario.listado_libros_usuario()
 
-                #print(f'\n\tUsuario: {usuario.nombre_cuenta}\n\tLibro buscado: {libro_en_devolucion}')
+
                 for libro_retirado in usuario.libros_retirados:
-                    print(f'\n{contador} HOLAAA CONFIRMO!! {usuario.libros_retirados[0]}')
+
+                    print(f'\nLibro a devolver: [{libro_en_devolucion}]\nLibro en busqueda: [{libro_retirado.nombre}]')
+
                     if libro_retirado.nombre == libro_en_devolucion:
                         usuario.libros_retirados.remove(libro_retirado)
                         for libro_a_devolver in self.__lista_libros:
                             if libro_a_devolver.nombre == libro_en_devolucion:
-                                print(f'libros {usuario}: {usuario.libros_retirados}')
+                                #print(f'\nlibros de {usuario}: {usuario.libros_retirado}')
                                 libro_a_devolver.cantidad_disponible = libro_a_devolver.cantidad_disponible + 1
                                 libro_a_devolver.unidades_prestadas = libro_a_devolver.unidades_prestadas - 1
                     contador = contador + 1
@@ -151,7 +151,6 @@ class Sucursal():
 
 # USUARIOS
     def nuevo_usuario(self, usuario):
-
         self.__dinero_recaudado =  self.__dinero_recaudado + usuario.tipo_suscripcion.costo_suscripcion
         self.__usuarios.append(usuario)
 
@@ -162,6 +161,10 @@ class Sucursal():
         print(f'\nLISTA DE USUARIOS POR SUSCRIPCION:')
         contador = 0
         for usuario in self.__usuarios:
+            texto_libros = ''
+            for libros in usuario.libros_retirados:
+                texto_libros = texto_libros +' - '+ str(libros)
+
             if isinstance(usuario.tipo_suscripcion, Suscripcion_alumno) == True:
                 contador = contador + 1
 
@@ -169,12 +172,15 @@ class Sucursal():
         contador = 1
         for usuario in self.__usuarios:
             if isinstance(usuario.tipo_suscripcion, Suscripcion_alumno) == True:
-                print(f'({contador}) {usuario}\n')
+                print(f'({contador}) {usuario}\nLibros retirados[{texto_libros}]\n')
                 contador = contador + 1
         # ---------------------- ESTANDAR -----------------------
 
         contador = 0
         for usuario in self.__usuarios:
+            texto_libros = ''
+            for libros in usuario.libros_retirados:
+                texto_libros = texto_libros + str(libros)
             if isinstance(usuario.tipo_suscripcion, Suscripcion_estandar) == True:
                 contador = contador + 1
 
@@ -182,7 +188,7 @@ class Sucursal():
         contador = 1
         for usuario in self.__usuarios:
             if isinstance(usuario.tipo_suscripcion, Suscripcion_estandar) == True:
-                print(f'({contador}) {usuario}\n')
+                print(f'({contador}) {usuario}\nLibros retirados[{texto_libros}]\n')
                 contador = contador + 1
 
 # EMPLEADOS
