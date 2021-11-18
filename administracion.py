@@ -25,3 +25,13 @@ class Administracion():
 
     def nueva_sucursal(self, sucursal):
         self.__lista_sucursales.append(sucursal)
+
+    def eliminar_sucursal(self, sucursal):
+        self.__lista_sucursales.remove(sucursal)
+
+    def stock_sucursal(self, sucursales_a_buscar,libros_ingreso):
+        for sucursal_buscar in sucursales_a_buscar:
+            for sucursal_registrada in self.__lista_sucursales:
+                if sucursal_buscar.localidad == sucursal_registrada.localidad and sucursal_buscar.direccion == sucursal_registrada.direccion:
+                    for libro in libros_ingreso:
+                        sucursal_registrada.nuevo_libro(libro)

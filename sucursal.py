@@ -75,31 +75,41 @@ class Sucursal():
 # LIBROS
 
     def nuevo_libro(self, libro):
-        self.__lista_libros.append(libro)
+        existe_previamente = False
+        for libro_almacenado in self.__lista_libros:
+            if libro_almacenado.nombre == libro.nombre:
+                existe_previamente = True
+                libro_almacenado.cantidad_disponible = libro_almacenado.cantidad_disponible + libro.cantidad_disponible
+        if existe_previamente == False:
+            self.__lista_libros.append(libro)
 
     def eliminar_libro(self, libro):
         self.__lista_libros.remove(libro)
 
-    def retirar_libro(self, libro_buscar, usuario_nombre):
+    def retirar_libro(self, lista_libros_retirar, usuario_nombre):
         condicion = False
-        for libro in self.__lista_libros:
-            if libro.nombre == libro_buscar:
-                if libro.cantidad_disponible >= 1:
-                    condicion = True
-                    libro.cantidad_disponible = libro.cantidad_disponible - 1
-                    libro.unidades_prestadas = libro.unidades_prestadas + 1
-                    for usuario in self.__usuarios:
-                        if usuario.nombre_cuenta == usuario_nombre:
-                            usuario.libros_retirados.append(libro)
-                            fecha_actual = datetime.date.today()
-                            if libro.tipo == 'academico':
-                                margen_dias = datetime.timedelta(days=14)
-                            else:
-                                margen_dias = datetime.timedelta(days=28)
-                            libro.fecha_devolucion = fecha_actual + margen_dias
-                            print(f'Se ha retirado el libro: {libro}. Fecha de devolucion: {libro.fecha_devolucion} [{margen_dias.days} dias]')
-                            print(
-                                f'Libro: {libro.nombre} retirado exitosamente')
+        for libro_a_retirar in lista_libros_retirar:
+            for libro in self.__lista_libros:
+                if libro_a_retirar.nombre == libro.nombre:
+                    if libro.cantidad_disponible >= 1:
+                        condicion = True
+                        libro.cantidad_disponible = libro.cantidad_disponible - 1
+                        libro.unidades_prestadas = libro.unidades_prestadas + 1
+                        for usuario in self.__usuarios:
+                            if usuario.nombre_cuenta == usuario_nombre:
+                                usuario.libros_retirados.append(libro)
+                                fecha_actual = datetime.date.today()
+                                if libro.tipo == 'academico':
+                                    margen_dias = datetime.timedelta(days=14)
+                                else:
+                                    margen_dias = datetime.timedelta(days=28)
+
+                                margen_dias = datetime.timedelta(days=-1)
+                                
+                                libro.fecha_devolucion = fecha_actual + margen_dias
+                                print(f'Se ha retirado el libro: {libro}. Fecha de devolucion: {libro.fecha_devolucion} [{margen_dias.days} dias]')
+                                print(
+                                    f'Libro: {libro.nombre} retirado exitosamente')
         if condicion == False:
             print(f'(No se cuenta con unidades para realizar el retiro)')
             # usuario con la fecha de devolucion mas proxima
@@ -117,25 +127,32 @@ class Sucursal():
                         contador += contador
             # imprimo lista de usuarios que tienen en adquisicion el libro buscado
 
-    def devolver_libro(self, libro_en_devolucion,usuario_nombre):
+    def devolver_libro(self, lista_libros_devolver,usuario_nombre):
         contador = 1
         for usuario in self.__usuarios:
             if usuario.nombre_cuenta == usuario_nombre: #DA PROBLEMAAAAAAAAAASSSSSSSSSSSSSSS!!!!!!!!!!
                 usuario.listado_libros_usuario()
-
-
-                for libro_retirado in usuario.libros_retirados:
-
-                    print(f'\nLibro a devolver: [{libro_en_devolucion}]\nLibro en busqueda: [{libro_retirado.nombre}]')
-
-                    if libro_retirado.nombre == libro_en_devolucion:
-                        usuario.libros_retirados.remove(libro_retirado)
-                        for libro_a_devolver in self.__lista_libros:
-                            if libro_a_devolver.nombre == libro_en_devolucion:
-                                #print(f'\nlibros de {usuario}: {usuario.libros_retirado}')
-                                libro_a_devolver.cantidad_disponible = libro_a_devolver.cantidad_disponible + 1
-                                libro_a_devolver.unidades_prestadas = libro_a_devolver.unidades_prestadas - 1
-                    contador = contador + 1
+                for libro_en_devolucion in lista_libros_devolver:
+                    for libro_retirado in usuario.libros_retirados:
+                        if libro_retirado.nombre == libro_en_devolucion.nombre:
+                            usuario.libros_retirados.remove(libro_retirado)
+                            for libro_a_devolver in self.__lista_libros:
+                                if libro_a_devolver.nombre == libro_en_devolucion.nombre:
+                                    fecha_actual = datetime.date.today()
+                                    dias_de_retraso = (libro_a_devolver.fecha_devolucion - fecha_actual)
+                                    if dias_de_retraso.days < 0:
+                                        print(f'\ndias de retraso: {-1*dias_de_retraso.days}')
+                                        monto_por_atraso = (-1*dias_de_retraso.days) * libro_a_devolver.interes_atraso
+                                        self.__dinero_recaudado = self.__dinero_recaudado + monto_por_atraso 
+                                        print(f'Monto por atraso: ${monto_por_atraso}')
+                                    else:
+                                        print(f'\nDias de retraso: 0\nDias para devolucion: {dias_de_retraso.days}')
+                                    #print(f'\nlibros de {usuario}: {usuario.libros_retirado}')
+                                    libro_a_devolver.cantidad_disponible = libro_a_devolver.cantidad_disponible + 1
+                                    libro_a_devolver.unidades_prestadas = libro_a_devolver.unidades_prestadas - 1
+                                    #print(f'\nLibro: [{libro_en_devolucion}]\nLibro en busqueda: [{libro_retirado.nombre}]')
+                                    print(f'\n\tLibro: [{libro_retirado.nombre}] devuelto exitosamente')
+                        contador = contador + 1
 
 
     def listado_libros(self):
