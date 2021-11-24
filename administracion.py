@@ -38,7 +38,7 @@ class Administracion():
         self.__lista_sucursales.remove(sucursal)
 
 #LISTA SUCURSALES
-    def lista_sucursales(self):
+    def listado_sucursales(self):
         print(f'--- Lista Sucursales ---')
         contador = 1
         for sucursal_registrada in self.__lista_sucursales:

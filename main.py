@@ -82,6 +82,7 @@ def interfaz_general():
     print(f'[1]- Mostrar Datos')
     print(f'[2]- Cargar Datos')
     print(f'[3]- Eliminar Datos')
+    print(f'[X]- Devolver libro')
     print(f'[4]- Salir')
 
 def interfaz_mostrar():
@@ -106,6 +107,14 @@ def interfaz_datos():
     
 def main2():
     administracion = Administracion()
+    administracion.nueva_sucursal('Posadas','Cordoba 1234','8am a 10pm')
+    fecha_actual = datetime.date.today()
+    margen_caducidad_suscripcion = datetime.timedelta(days=365)
+    fecha_caducidad = fecha_actual + margen_caducidad_suscripcion
+    suscripcion_alumno = Suscripcion(500,margen_caducidad_suscripcion,5,fecha_actual,fecha_caducidad,'Estudiante')
+    suscripcion_estandar = Suscripcion(750,margen_caducidad_suscripcion,7,fecha_actual,fecha_caducidad,'Estandar')
+
+
     opcion = 0
     while(opcion != 4):
         interfaz_general()
@@ -122,19 +131,61 @@ def main2():
                 opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
 
             if(opcion_mostrar == 1):
-                administracion.lista_sucursales()
+                system("cls")
+                administracion.listado_sucursales()
+                print(f'\n')
 
             if(opcion_mostrar == 2):
-                pass
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal para listar sus libros')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                administracion.lista_sucursales[opcion_mostrar].listado_libros()
 
             if(opcion_mostrar == 3):
-                pass
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal para listar sus libros')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                administracion.lista_sucursales[opcion_mostrar].usuarios_por_suscripcion()
 
             if(opcion_mostrar== 4):
-                pass
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal para listar sus libros')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                administracion.lista_sucursales[opcion_mostrar].empleados_sucursal()
 
             if(opcion_mostrar == 5):
-                pass
+                system("cls")
+                print(f'\n----- LISTA DE LIBROS MAS RETIRADOS POR SUCURSAL -----\n')
+                for sucursal in administracion.lista_sucursales:
+                    sucursal.libro_mas_retirado()
+                print(f'\n')
 
         if(opcion == 2):
             interfaz_datos()
@@ -142,22 +193,92 @@ def main2():
             while(opcion_mostrar != 1 and opcion_mostrar != 2 and opcion_mostrar != 3 and opcion_mostrar != 4):
                 opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
             if(opcion_mostrar == 1):
+                system("cls")
+                print(f'-------- Ingrese los datos de la Sucursal a registrar --------')
                 localidad = input('\nIngrese la localidad: ')
                 direccion = input('\nIngrese una direccion: ')
                 horario = input('\nIngrese el horario de atencion (como string): ')
                 administracion.nueva_sucursal(localidad,direccion,horario)
 
             if(opcion_mostrar == 2):
-                pass
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal para listar sus libros')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                print(f'-------- Ingrese los datos del Libro a registrar --------')
+                nombre = input('\nIngrese el nombre del libro: ')
+                autor = input('\nIngrese el autor del libro: ')
+                edicion = input('\nIngrese el edicion del libro (anio): ')
+                genero = input('\nIngrese el genero del libro: ')
+                cantidad = int(input('\nIngrese el numero de unidades del libro: '))
+                administracion.lista_sucursales[opcion_mostrar].nuevo_libro(nombre, autor, edicion, genero , cantidad)
 
             if(opcion_mostrar == 3):
-                pass
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal a la cual se le cargara el Empleado')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                print(f'-------- Ingrese los datos del Empleado a registrar --------')
+                nombre = input('\nIngrese el nombre del Empleado: ')
+                apellido = input('\nIngrese el apellido del Empleado: ')
+                edad = int(input('\nIngrese la edad del empleado: '))
+                horas = int(input('\nIngrese las cantidad de horas de un turno diario: '))
+                cargo = input('\nIngrese el cargo del Empleado: ')
+                sueldo = int(input('\nIngrese el Sueldo del Empleado: '))
+                
+                #empleado_1 = Empleado('Raul','Perez',35,'7am a 13pm','Gerente',55000)
+                administracion.lista_sucursales[opcion_mostrar].nuevo_empleado( nombre, apellido, edad, horas, cargo, sueldo)
 
             if(opcion_mostrar== 4):
-                pass
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal a la cual se le cargara el Usuario')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                print(f'-------- Ingrese los datos del Usuario a registrar --------')
+                nombre = input('\nIngrese el nombre del Usuario: ')
+                apellido = input('\nIngrese el apellido del Usuario: ')
+                edad = int(input('\nIngrese la edad del Usuario: '))
 
-            if(opcion_mostrar == 5):
-                pass
+                respuesta = 'O'
+                tipo_suscripcion = None
+
+                while respuesta != 'E' and respuesta != 'e' and respuesta != 'S' and respuesta != 's':
+                    respuesta = input('\nSeleccione [E] para suscripcion de Estudiante y [S] para suscripcion Estandar: ')
+                    system("cls")
+
+                if respuesta == 'e' or respuesta == 'E':
+                    tipo_suscripcion = suscripcion_alumno
+                    print('\nSuscripcion Estudiante')
+                else:
+                    tipo_suscripcion = suscripcion_estandar
+                    print('\nSuscripcion Estandar')
+                #empleado_1 = Empleado('Raul','Perez',35,'7am a 13pm','Gerente',55000)
+                administracion.lista_sucursales[opcion_mostrar].nuevo_usuario( nombre, apellido, edad, tipo_suscripcion)
+
             system("cls")
             pass
 
@@ -168,6 +289,7 @@ def main2():
         if(opcion == 4):
             system("cls")
             pass
+        
         os.system("pause")
         opcion = 0
 if __name__ == '__main__':

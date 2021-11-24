@@ -2,19 +2,19 @@ from persona import Persona
 
 
 class Empleado(Persona):
-    def __init__(self, nombre, apellido, edad, horario, cargo, sueldo):
+    def __init__(self, nombre, apellido, edad, horas, cargo, sueldo):
         super().__init__(nombre, apellido, edad)
-        self.__horario = horario  # diccionario de 5 dias de la semana 8 horas diarias
+        self.__horas = horas  # diccionario de 5 dias de la semana 8 horas diarias
         self.__cargo = cargo
         self.__sueldo = sueldo
 
     @property
-    def horario(self):
-        return self.__horario
+    def horas(self):
+        return self.__horas
 
-    @horario.setter
-    def horario(self, value):
-        self.__horario = value
+    @horas.setter
+    def horas(self, value):
+        self.__horas = value
 
     @property
     def cargo(self):
