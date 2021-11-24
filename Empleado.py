@@ -2,8 +2,8 @@ from persona import Persona
 
 
 class Empleado(Persona):
-    def __init__(self,nombre_cuenta, contrasenia, nombre, apellido, edad, horario, cargo, sueldo):
-        super().__init__(nombre_cuenta, contrasenia, nombre, apellido, edad)
+    def __init__(self, nombre, apellido, edad, horario, cargo, sueldo):
+        super().__init__(nombre, apellido, edad)
         self.__horario = horario  # diccionario de 5 dias de la semana 8 horas diarias
         self.__cargo = cargo
         self.__sueldo = sueldo

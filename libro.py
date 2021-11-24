@@ -1,9 +1,9 @@
+#ELIMINAR ATRIBUTO CANTIDAD DE LIBRO
 class Libro():
-    def __init__(self, nombre, autor, edicion, cantidad_disponible=0, tipo=None):
+    def __init__(self, nombre, autor, edicion, tipo=None):
         self.__nombre = nombre
         self.__autor = autor
         self.__edicion = edicion
-        self.__cantidad_disponible = cantidad_disponible
         self.__tipo = tipo
         self.__unidades_prestadas = 0
         self.__fecha_devolucion = None
@@ -32,14 +32,6 @@ class Libro():
     @edicion.setter
     def edicion(self, value):
         self.__edicion = value
-
-    @property
-    def cantidad_disponible(self):
-        return self.__cantidad_disponible
-
-    @cantidad_disponible.setter
-    def cantidad_disponible(self, value):
-        self.__cantidad_disponible = value
 
     @property
     def tipo(self):

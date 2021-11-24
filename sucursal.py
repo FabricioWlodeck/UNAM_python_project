@@ -12,9 +12,10 @@ class Sucursal():
         self.__personal = []
         self.__horarios_atencion = horarios_atencion
         self.__dinero_recaudado = 0
-        self.__lista_libros = []  # lista de diccionarios de objetos Libro
+        self.__lista_libros = {}  # diccionario de libros donde la clave es otro diccionario con las cantidades disponible, prestadas, retiros en el mes
         self.__usuarios = []  # lista de diccionarios de objetos Usuario
 
+#GETTER AND SETTER, STR
     @property
     def localidad(self):
         return self.__localidad
@@ -72,21 +73,28 @@ class Sucursal():
     def dinero_recaudado(self):
         print(f'\nDinero recaudado: ${self.__dinero_recaudado}')
 
-# LIBROS
-
-    def nuevo_libro(self, libro):
+#LIBROS
+    def nuevo_libro(self, libro, cantidad):
         existe_previamente = False
+        for key_existente, value_existente in self.__lista_libros.items():
+                if libro == key_existente:
+                    existe_previamente = True
+                    value_existente = value_existente + cantidad
+        if existe_previamente == False:
+            self.__lista_libros[libro] = cantidad
+
+            """ existe_previamente = False
         for libro_almacenado in self.__lista_libros:
             if libro_almacenado.nombre == libro.nombre:
                 existe_previamente = True
                 libro_almacenado.cantidad_disponible = libro_almacenado.cantidad_disponible + libro.cantidad_disponible
         if existe_previamente == False:
-            self.__lista_libros.append(libro)
+            self.__lista_libros.append(libro) """
 
     def eliminar_libro(self, libro):
         self.__lista_libros.remove(libro)
 
-    def retirar_libro(self, lista_libros_retirar, usuario_nombre):
+    def retirar_libro(self, lista_libros_retirar, usuario_nombre,usuario_apellido):
         condicion = False
         for libro_a_retirar in lista_libros_retirar:
             for libro in self.__lista_libros:
@@ -96,20 +104,21 @@ class Sucursal():
                         libro.cantidad_disponible = libro.cantidad_disponible - 1
                         libro.unidades_prestadas = libro.unidades_prestadas + 1
                         for usuario in self.__usuarios:
-                            if usuario.nombre_cuenta == usuario_nombre:
-                                usuario.libros_retirados.append(libro)
-                                fecha_actual = datetime.date.today()
-                                if libro.tipo == 'academico':
-                                    margen_dias = datetime.timedelta(days=14)
-                                else:
-                                    margen_dias = datetime.timedelta(days=28)
+                            if usuario.nombre == usuario_nombre:
+                                if usuario.apellido == usuario_apellido:
+                                    usuario.libros_retirados.append(libro)
+                                    fecha_actual = datetime.date.today()
+                                    if libro.tipo == 'academico':
+                                        margen_dias = datetime.timedelta(days=14)
+                                    else:
+                                        margen_dias = datetime.timedelta(days=28)
 
-                                margen_dias = datetime.timedelta(days=-1)
-                                
-                                libro.fecha_devolucion = fecha_actual + margen_dias
-                                print(f'Se ha retirado el libro: {libro}. Fecha de devolucion: {libro.fecha_devolucion} [{margen_dias.days} dias]')
-                                print(
-                                    f'Libro: {libro.nombre} retirado exitosamente')
+                                    margen_dias = datetime.timedelta(days=-1)
+                                    
+                                    libro.fecha_devolucion = fecha_actual + margen_dias
+                                    print(f'Se ha retirado el libro: {libro}. Fecha de devolucion: {libro.fecha_devolucion} [{margen_dias.days} dias]')
+                                    print(
+                                        f'Libro: {libro.nombre} retirado exitosamente')
         if condicion == False:
             print(f'(No se cuenta con unidades para realizar el retiro)')
             # usuario con la fecha de devolucion mas proxima
@@ -120,7 +129,7 @@ class Sucursal():
             contador = 1
             for usuario in self.__usuarios:
                 for libro in usuario.libros_retirados:
-                    if libro_buscar == libro.nombre:
+                    if lista_libros_retirar == libro.nombre:
                         # lista_usuarios_devolucion.append(usuario)
                         print(
                             f'({contador}) {usuario.nombre}, {usuario.apellido}')
@@ -157,6 +166,9 @@ class Sucursal():
 
     def listado_libros(self):
         contador = 0
+        for key_existente, value_existente in self.__lista_libros.items():
+            contador = contador + value_existente
+
         for libros in self.__lista_libros:
             contador = libros.cantidad_disponible + libros.unidades_prestadas + contador
 

@@ -2,9 +2,9 @@ from persona import Persona
 
 
 class Usuario(Persona):
-    def __init__(self, nombre_cuenta, contrasenia, nombre, apellido, edad, tipo_suscripcion):
+    def __init__(self,nombre, apellido, edad, tipo_suscripcion):
         #cambie Persona().__init__  por super().__init__
-        super().__init__(nombre_cuenta, contrasenia, nombre, apellido, edad)
+        super().__init__(nombre, apellido, edad)
         self.__tipo_suscripcion = tipo_suscripcion
         self.__libros_retirados = []  # se le pasara objetos tipo libro
 
@@ -30,7 +30,7 @@ class Usuario(Persona):
 
     def listado_libros_usuario(self):
         contador = 1 
-        print(f'\n---LIBROS RETIRADOS POR {self.nombre_cuenta}---')
+        print(f'\n---LIBROS RETIRADOS POR {self.nombre} {self.apellido}---')
         for libros in self.__libros_retirados:
             print(f'{libros} - ')
             contador += contador
