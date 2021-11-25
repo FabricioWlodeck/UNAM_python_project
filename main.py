@@ -1,5 +1,6 @@
 from os import system
 import os, sys
+import sys
 import os
 from administracion import Administracion
 from sucursal import Sucursal
@@ -12,9 +13,9 @@ from suscripcion_alumno import Suscripcion_alumno
 from suscripcion_estandar import Suscripcion_estandar
 import datetime
 
-def main():
 
-#------------ INSTANCIAS DE OBJETOS ------------
+def main2():
+    #------------ INSTANCIAS DE OBJETOS ------------
     fecha_actual = datetime.date.today()
     margen_caducidad_suscripcion = datetime.timedelta(days=365)
     fecha_caducidad = fecha_actual + margen_caducidad_suscripcion
@@ -35,7 +36,7 @@ def main():
     sucursal_posadas = Sucursal('Posadas','Cordoba 1234','8am a 10pm')
     administracion = Administracion()
 
-#------------ SUSCRIPCION / STOCK / ALMACENAMIENTO  DE LAS OBJETOS INSTANCIADOS ------------
+    #------------ SUSCRIPCION / STOCK / ALMACENAMIENTO  DE LAS OBJETOS INSTANCIADOS ------------
     administracion.nueva_sucursal(sucursal_posadas)
 
     sucursal_posadas.nuevo_usuario(usuario_1)
@@ -47,8 +48,8 @@ def main():
     #INGRESO/RESTOCK MEDIANTE ADMINISTRACION
     administracion.distribucion_sucursal([sucursal_posadas],{libro_1:2,libro_2:2})
     """ sucursal_posadas.nuevo_libro(libro_1)
-    sucursal_posadas.nuevo_libro(libro_2)
     sucursal_posadas.nuevo_libro(libro_3) """
+    sucursal_posadas.nuevo_libro(libro_2)
     
     sucursal_posadas.usuarios_por_suscripcion()
     sucursal_posadas.empleados_sucursal()
@@ -82,8 +83,8 @@ def interfaz_general():
     print(f'[1]- Mostrar Datos')
     print(f'[2]- Cargar Datos')
     print(f'[3]- Eliminar Datos')
-    print(f'[X]- Devolver libro')
-    print(f'[4]- Salir')
+    print(f'[4]- IMPLEMENTANDO Retirar/Devolver libro')
+    print(f'[5]- Salir')
 
 def interfaz_mostrar():
     system("cls")
@@ -95,7 +96,6 @@ def interfaz_mostrar():
     print(f'[4]- Lista de Empleados por Sucursal')
     print(f'[5]- Lista de libros mas retirados por Sucursal')
 
-
 def interfaz_datos():
     system("cls")
     print(f'\n--------- Sistema de Bibliotecas Publicas de Misiones ---------')
@@ -105,14 +105,46 @@ def interfaz_datos():
     print(f'[3]- Ingresar nuevos Empleados')
     print(f'[4]- Ingresar nuevos Usuarios')
     
-def main2():
+def interfaz_eliminacion():
+    system("cls")
+    print(f'\n--------- Sistema de Bibliotecas Publicas de Misiones ---------')
+    print(f'\n---------           Opciones del Sistema       ---------\n')
+    print(f'[1]- Eliminar Sucursal')
+    print(f'[2]- Eliminar Libros')
+    print(f'[3]- Eliminar Empleados')
+    print(f'[4]- Eliminar Usuarios')
+
+def interfaz_retiro_devolucion():
+    system("cls")
+    print(f'\n--------- Sistema de Bibliotecas Publicas de Misiones ---------')
+    print(f'\n---------           Opciones del Sistema       ---------\n')
+    print(f'[1]- Retirar Libro')
+    print(f'[2]- Devolver Libro')
+
+
+def main():
     administracion = Administracion()
     administracion.nueva_sucursal('Posadas','Cordoba 1234','8am a 10pm')
     fecha_actual = datetime.date.today()
     margen_caducidad_suscripcion = datetime.timedelta(days=365)
     fecha_caducidad = fecha_actual + margen_caducidad_suscripcion
+
     suscripcion_alumno = Suscripcion(500,margen_caducidad_suscripcion,5,fecha_actual,fecha_caducidad,'Estudiante')
     suscripcion_estandar = Suscripcion(750,margen_caducidad_suscripcion,7,fecha_actual,fecha_caducidad,'Estandar')
+
+    administracion.lista_sucursales[0].nuevo_libro('Yo Robot', 'Isaac Asimov', '1990', 'Ciencia Ficcion' , 5)
+    administracion.lista_sucursales[0].nuevo_libro('El Sol Desnudo', 'Isaac Asimov', '1970', 'Ciencia Ficcion' , 1)     #
+    administracion.lista_sucursales[0].nuevo_empleado('Mateo', 'Amarilla', 20, 8, 'Repositor', 50000)
+
+    administracion.lista_sucursales[0].nuevo_usuario('Pablo', 'Silva', 20, suscripcion_alumno)                          #
+    administracion.lista_sucursales[0].nuevo_usuario('Juani', 'Lopez', 20, suscripcion_estandar)
+    administracion.lista_sucursales[0].nuevo_usuario('Sebastian', 'Monzon', 20, suscripcion_alumno)
+
+    #Estructura de guardado de libros dentro de una sucursal
+    """ {
+        libro_1 : {'cantidades_disponibles':0, 'cantidades_prestadas': 0}, libro_2 : {'cantidades_disponibles':0, 'cantidades_prestadas':0}
+    } """
+
 
 
     opcion = 0
@@ -190,7 +222,7 @@ def main2():
         if(opcion == 2):
             interfaz_datos()
             opcion_mostrar = 0
-            while(opcion_mostrar != 1 and opcion_mostrar != 2 and opcion_mostrar != 3 and opcion_mostrar != 4):
+            while(opcion_mostrar != 1 and opcion_mostrar != 2 and opcion_mostrar != 3 and opcion_mostrar != 4 and opcion_mostrar != 5):
                 opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
             if(opcion_mostrar == 1):
                 system("cls")
@@ -283,15 +315,190 @@ def main2():
             pass
 
         if(opcion == 3):
-            system("cls")
-            pass
+            interfaz_eliminacion()
+            contador = 0
+            for sucu in administracion.lista_sucursales:
+                contador = contador + 1
+            opcion_mostrar = 0
+            while(opcion_mostrar != 1 and opcion_mostrar != 2 and opcion_mostrar != 3 and opcion_mostrar != 4):
+                opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+
+            if(opcion_mostrar == 1):
+                system("cls")
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal a Eliminar')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                administracion.eliminar_sucursal(administracion.lista_sucursales[opcion_mostrar])
+            
+            if(opcion_mostrar == 2):
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal en la cual se Eliminaran los Libro:\n')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                
+                libros_por_titulo = 0
+                for key in administracion.lista_sucursales[opcion_mostrar].lista_libros:
+                    libros_por_titulo = libros_por_titulo + 1
+
+                opcion_eliminar = 0
+                while(opcion_eliminar < 1 or opcion_eliminar > libros_por_titulo):
+                    print(f'---------- Seleccione un Libro a Eliminar ----------\n')
+                    administracion.lista_sucursales[opcion_mostrar].listado_libros()
+                    opcion_eliminar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_eliminar = opcion_eliminar - 1
+
+                libro_a_eliminar = None
+                contador = 0
+                for key in administracion.lista_sucursales[opcion_mostrar].lista_libros:
+                    if contador == opcion_eliminar:
+                        libro_a_eliminar = key
+                    contador = contador + 1
+                
+                administracion.lista_sucursales[opcion_mostrar].eliminar_libro(libro_a_eliminar)
+
+            if(opcion_mostrar == 3):
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal en la cual se Eliminaran los Empleados:\n')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                
+                cant_empleados = 0
+                for emple in administracion.lista_sucursales[opcion_mostrar].personal:
+                    cant_empleados = cant_empleados + 1
+
+                opcion_eliminar = 0
+                while(opcion_eliminar < 1 or opcion_eliminar > cant_empleados):
+                    print(f'---------- Seleccione un Empleado a Eliminar ----------')
+                    administracion.lista_sucursales[opcion_mostrar].empleados_sucursal()
+                    opcion_eliminar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_eliminar = opcion_eliminar - 1
+
+                empleado_a_eliminar = None
+                contador = 0
+                for emple in administracion.lista_sucursales[opcion_mostrar].personal:
+                    if contador == opcion_eliminar:
+                        empleado_a_eliminar = emple
+                    contador = contador + 1
+                
+                administracion.lista_sucursales[opcion_mostrar].eliminar_empleado(empleado_a_eliminar)
+
+            if(opcion_mostrar == 4):
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal en la cual se Eliminaran los Usuarios:\n')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+                
+                cant_usuarios = 0
+                for usu in administracion.lista_sucursales[opcion_mostrar].usuarios:
+                    cant_usuarios = cant_usuarios + 1
+
+                opcion_eliminar = 0
+                while(opcion_eliminar < 1 or opcion_eliminar > cant_usuarios):
+                    print(f'---------- Seleccione un Empleado a Eliminar ----------')
+                    administracion.lista_sucursales[opcion_mostrar].usuarios_por_suscripcion()
+                    opcion_eliminar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                opcion_eliminar = opcion_eliminar - 1
+
+                usuario_a_eliminar = None
+                contador = 0
+                for usu in administracion.lista_sucursales[opcion_mostrar].usuarios:
+                    if contador == opcion_eliminar:
+                        usuario_a_eliminar = usu
+                    contador = contador + 1
+                
+                administracion.lista_sucursales[opcion_mostrar].eliminar_usuario(usuario_a_eliminar)
 
         if(opcion == 4):
+            interfaz_retiro_devolucion()
+            contador = 0
+            opcion_mostrar = 0
+            while(opcion_mostrar < 1 or opcion_mostrar > 2):
+                opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                system("cls")
             system("cls")
-            pass
+
+            #seleccionar Sucursal aunque se deberia validar/buscar el usuario en todas las sucursales tal vez
+
+            if(opcion_mostrar == 1):
+                """ print(f'-------- Ingrese Sus Datos y Del Libro a Retirar --------')
+                validacion_nombre_usuario = False
+                while(validacion_nombre_usuario != True):
+                    nombre = input('\nIngrese su Nombre: ')
+                    apellido = input('\nIngrese su Apellido: ')
+                    for administracion.lista_sucursales[opcion_mostrar].
+
+
+                edad = input('\nIngrese el Nombre del Libro a Retirar: ')
+
+                
+                #empleado_1 = Empleado('Raul','Perez',35,'7am a 13pm','Gerente',55000)
+                administracion.lista_sucursales[opcion_mostrar].nuevo_empleado( nombre, apellido, edad, horas, cargo, sueldo) """
+
+                orden_libro_retirar = 0
+                libro_retirar=None
+                for key in administracion.lista_sucursales[0].lista_libros:
+                    if orden_libro_retirar == 1:
+                        libro_retirar = key
+                    orden_libro_retirar = orden_libro_retirar + 1
+                
+                #ejemplo de retiro del 2do libro de la lista de Libros de la Sucursal realizado por el 1er Usuario de la Lista de Usuarios de la Sucursal
+                administracion.lista_sucursales[0].retirar_libro([libro_retirar],administracion.lista_sucursales[0].usuarios[0])
+
+            if(opcion_mostrar == 2):
+                #  administracion.lista_sucursales[0].devolver_libro([libro_1],usuario_1.nombre)
+                orden_libro_retirar = 0
+                libro_retirar=None
+                for key in administracion.lista_sucursales[0].lista_libros:
+                    if orden_libro_retirar == 1:
+                        libro_retirar = key
+                    orden_libro_retirar = orden_libro_retirar + 1
+                
+                #ejemplo de retiro del 2do libro de la lista de Libros de la Sucursal realizado por el 1er Usuario de la Lista de Usuarios de la Sucursal
+
+                #RETIRAR Y DEVOLVER LIBROS DE FORMA INDIVIDUAL!!!!!!!!!!!!!!!!
+                
+                administracion.lista_sucursales[0].retirar_libro([libro_retirar],administracion.lista_sucursales[0].usuarios[0])
+                pass
+
+
+        if(opcion == 5):
+            system("cls")
+            sys.exit()
         
         os.system("pause")
         opcion = 0
 if __name__ == '__main__':
-    main2()
+    main()
     #main()

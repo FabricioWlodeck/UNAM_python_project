@@ -36,6 +36,3 @@ class Empleado(Persona):
         texto = (f'Empleado: {self.nombre}, {self.apellido} \nCargo: {self.cargo} \nSueldo: ${self.sueldo} ')
         return texto
 
-""" horarios = {'Lunes':8 , 'Martes':8, 'Miercoles':8, 'Jueves':8, 'Viernes':8}
-cargo = 'repositor'
-sueldo = 55000 """

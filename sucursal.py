@@ -26,6 +26,14 @@ class Sucursal():
         self.__localidad = value
 
     @property
+    def personal(self):
+        return self.__personal
+
+    @personal.setter
+    def personal(self, value):
+        self.__personal = value
+
+    @property
     def direccion(self):
         return self.__direccion
 
@@ -65,7 +73,7 @@ class Sucursal():
     def usuarios(self, value):
         self.__usuarios = value
 
-    def __srt__(self):
+    def __str__(self):
         texto = (f'Sucursal de {self.__localidad}, {self.__direccion}. Atencion: {self.__horarios_atencion}')
         return texto
 
@@ -88,23 +96,24 @@ class Sucursal():
         if existe_previamente == False:
             self.__lista_libros[libro] = {'cantidades_disponibles': cantidad, 'cantidades_prestadas': 0}
 
-            #self.__lista_libros[libro] = cantidad
 
     def eliminar_libro(self, libro):
-        self.__lista_libros.remove(libro)
+        self.__lista_libros.pop(libro)
 
-    def retirar_libro(self, lista_libros_retirar, usuario_nombre,usuario_apellido):
+    def retirar_libro(self, lista_libros_retirar,usuario_retiro):
         condicion = False
         for libro_a_retirar in lista_libros_retirar:
-            for libro in self.__lista_libros:
+            for libro, cantidades in self.__lista_libros.items():
                 if libro_a_retirar.nombre == libro.nombre:
-                    if libro.cantidad_disponible >= 1:
+                    if cantidades['cantidades_disponibles'] >= 1:
                         condicion = True
-                        libro.cantidad_disponible = libro.cantidad_disponible - 1
-                        libro.unidades_prestadas = libro.unidades_prestadas + 1
+                        cantidades['cantidades_disponibles'] = cantidades['cantidades_disponibles'] - 1
+                        cantidades['cantidades_prestadas'] = cantidades['cantidades_prestadas'] + 1
+
                         for usuario in self.__usuarios:
-                            if usuario.nombre == usuario_nombre:
-                                if usuario.apellido == usuario_apellido:
+                            if usuario.nombre == usuario_retiro.nombre:
+                                if usuario.apellido == usuario_retiro.apellido:
+                                    print(f'El usuario {usuario}, a retirado {libro}')
                                     usuario.libros_retirados.append(libro)
                                     fecha_actual = datetime.date.today()
                                     if libro.tipo == 'academico':
@@ -128,10 +137,9 @@ class Sucursal():
             contador = 1
             for usuario in self.__usuarios:
                 for libro in usuario.libros_retirados:
-                    if lista_libros_retirar == libro.nombre:
+                    if libro_a_retirar.nombre == libro.nombre:
                         # lista_usuarios_devolucion.append(usuario)
-                        print(
-                            f'({contador}) {usuario.nombre}, {usuario.apellido}')
+                        print(f'({contador}) {usuario.nombre}, {usuario.apellido}')
                         contador += contador
             # imprimo lista de usuarios que tienen en adquisicion el libro buscado
 
@@ -166,6 +174,7 @@ class Sucursal():
     def listado_libros(self):
         #voy mostrando el libro con sus repestivas cantidades, las cuales estan almacenadas en un diccionario dentro del atributo valor del diccionario general que almacena los libros
         contador = 0
+        contador_listado = 1
         for key_existente, value_existente in self.__lista_libros.items():
             for key_cantidad, value_cantidad in value_existente.items():
                 contador = contador + value_cantidad
@@ -180,7 +189,7 @@ class Sucursal():
                     cantidad_disponible = value_cantidad
                 else:
                     cantidad_prestada = value_cantidad
-            print(f'{key_existente}\nunidades: {cantidad_disponible}\nUnidades prestadas: {cantidad_prestada}\n')
+            print(f'[{contador_listado}] {key_existente}\n    unidades: {cantidad_disponible}\n    Unidades prestadas: {cantidad_prestada}\n')
 
     def libro_mas_retirado(self):
         cantidad_prestada = 0
@@ -204,37 +213,24 @@ class Sucursal():
 
     def usuarios_por_suscripcion(self):
         print(f'\nLISTA DE USUARIOS POR SUSCRIPCION:')
-        contador = 0
-        for usuario in self.__usuarios:
-            texto_libros = ''
-            for libros in usuario.libros_retirados:
-                texto_libros = texto_libros +' - '+ str(libros)
-
-            if usuario.tipo_suscripcion.tipo == 'Estudiante':
-                contador = contador + 1
-
-        print(f'\n---------- SUSCRIPCION ESTUDIANTE: [{contador}] ----------')
-        contador = 1
+        # ---------------------- ESTUDIANTE -----------------------
+        contador_estudiante = 0
+        contador_estandar = 0
         for usuario in self.__usuarios:
             if usuario.tipo_suscripcion.tipo == 'Estudiante':
-                print(f'({contador}) {usuario}\nLibros retirados[{texto_libros}]\n')
-                contador = contador + 1
-        # ---------------------- ESTANDAR -----------------------
+                contador_estudiante = contador_estudiante + 1
 
-        contador = 0
-        for usuario in self.__usuarios:
-            texto_libros = ''
-            for libros in usuario.libros_retirados:
-                texto_libros = texto_libros + str(libros)
-            if isinstance(usuario.tipo_suscripcion, Suscripcion_estandar) == True:
-                contador = contador + 1
-
-        print(f'\n---------- SUSCRIPCION ESTANDAR:   [{contador}] ----------')
-        contador = 1
-        for usuario in self.__usuarios:
             if usuario.tipo_suscripcion.tipo == 'Estandar':
-                print(f'({contador}) {usuario}\nLibros retirados[{texto_libros}]\n')
-                contador = contador + 1
+                contador_estandar = contador_estandar + 1
+            
+        print(f'\n- CANTIDAD SUSCRIPCIONES ESTUDIANTE: [{contador_estudiante}]')
+        print(f'\n- CANTIDAD SUSCRIPCIONES ESTANDAR:   [{contador_estandar}] \n')
+
+        contador = 1
+        for usuario in self.__usuarios:
+            print(f'({contador}) {usuario}\nLibros retirados[{usuario.retornar_lista_libros()}]\n')
+            contador = contador + 1
+
 
 # EMPLEADOS
     def nuevo_empleado(self, nombre, apellido, edad, horas, cargo, sueldo):
@@ -246,11 +242,12 @@ class Sucursal():
 
     def empleados_sucursal(self):
         contador = 0
+        aux_contador = 1
         for empleado in self.__personal:
             contador = contador + 1
         print(f'\n---------- LISTA DE EMPLEADOS [{contador}]----------')
         for empleado in self.__personal:
-            print(f'{empleado}\n')
+            print(f'[{aux_contador}] - {empleado}\n')
             contador = contador + 1
 
    
