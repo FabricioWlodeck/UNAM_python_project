@@ -32,9 +32,6 @@ class Usuario(Persona):
         contador = 1 
         print(f'Libros retirados por usuario:')
 
-        """ for librin in self.__libros_retirados:
-            print(f'{librin}') """
-
         print(f'\n---LIBROS RETIRADOS POR {self.nombre} {self.apellido}---')
         for libros in self.__libros_retirados:
             print(f'{libros} - ')
@@ -43,5 +40,12 @@ class Usuario(Persona):
     def retornar_lista_libros(self):
         lista_libros = ''
         for libros in self.__libros_retirados:
-            lista_libros = lista_libros +' - ' + libros.nombre
+            lista_libros = lista_libros + ' - ' + libros.nombre
         return lista_libros
+
+    def retornar_lista_libros_formato_menu(self):
+        contador = 1
+        print(f'\n---LIBROS RETIRADOS POR {self.nombre} {self.apellido}---')
+        for libros in self.__libros_retirados:
+            print(f'[{contador}] - {libros.nombre}')
+            contador = contador + 1

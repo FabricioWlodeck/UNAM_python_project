@@ -452,46 +452,122 @@ def main():
             #seleccionar Sucursal aunque se deberia validar/buscar el usuario en todas las sucursales tal vez
 
             if(opcion_mostrar == 1):
-                """ print(f'-------- Ingrese Sus Datos y Del Libro a Retirar --------')
-                validacion_nombre_usuario = False
-                while(validacion_nombre_usuario != True):
-                    nombre = input('\nIngrese su Nombre: ')
-                    apellido = input('\nIngrese su Apellido: ')
-                    for administracion.lista_sucursales[opcion_mostrar].
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal para Retirar su libro')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                #DATO SUCURSAL ELEGIDA    
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
 
+                usuario_a_retirar = None
+                usuario_registrado = False
+                print(f'-------- Ingrese Su Nombre y Apellido (como Figura en su Registro) --------')
+                nombre = input('\nIngrese su nombre de Usuario: ')
+                apellido = input('\nIngrese su apellido de Usuario: ')
+                for usuario in administracion.lista_sucursales[opcion_mostrar].usuarios:
+                    if usuario.apellido == apellido and usuario.nombre == nombre:
+                        usuario_registrado = True
+                        usuario_a_retirar = usuario
 
-                edad = input('\nIngrese el Nombre del Libro a Retirar: ')
+                if usuario_registrado == True:
+                    system("cls")
+                    libros_por_titulo = 0
+                    for key in administracion.lista_sucursales[opcion_mostrar].lista_libros:
+                        libros_por_titulo = libros_por_titulo + 1
+
+                    opcion_retirar = 0
+                    while(opcion_retirar < 1 or opcion_retirar > libros_por_titulo):
+                        print(f'---------- Seleccione un Libro a Retirar ----------\n')
+                        administracion.lista_sucursales[opcion_mostrar].listado_libros()
+                        opcion_retirar = int(input('\nIngrese una opcion entre las dadas: '))
+                        system("cls")
+                    opcion_retirar = opcion_retirar - 1
+
+                    orden_libro_retirar = 0
+                    libro_retirar=None
+                    for key in administracion.lista_sucursales[opcion_mostrar].lista_libros:
+                        if orden_libro_retirar == opcion_retirar:
+                            libro_retirar = key
+                        orden_libro_retirar = orden_libro_retirar + 1
+
+                    administracion.lista_sucursales[opcion_mostrar].retirar_libro(libro_retirar,usuario_a_retirar)
+
+                else:
+                    system("cls")
+                    print(f'El Usuario Ingresado no se encuentra Registrado en esta Sucursal, por ende no puede realizar retiros')
 
                 
-                #empleado_1 = Empleado('Raul','Perez',35,'7am a 13pm','Gerente',55000)
-                administracion.lista_sucursales[opcion_mostrar].nuevo_empleado( nombre, apellido, edad, horas, cargo, sueldo) """
-
-                orden_libro_retirar = 0
-                libro_retirar=None
-                for key in administracion.lista_sucursales[0].lista_libros:
-                    if orden_libro_retirar == 1:
-                        libro_retirar = key
-                    orden_libro_retirar = orden_libro_retirar + 1
-                
-                #ejemplo de retiro del 2do libro de la lista de Libros de la Sucursal realizado por el 1er Usuario de la Lista de Usuarios de la Sucursal
-                administracion.lista_sucursales[0].retirar_libro([libro_retirar],administracion.lista_sucursales[0].usuarios[0])
-
             if(opcion_mostrar == 2):
-                #  administracion.lista_sucursales[0].devolver_libro([libro_1],usuario_1.nombre)
-                orden_libro_retirar = 0
-                libro_retirar=None
+                system("cls")
+                contador = 0
+                for sucu in administracion.lista_sucursales:
+                    contador = contador + 1
+                opcion_mostrar = 0
+                while(opcion_mostrar < 1 or opcion_mostrar > contador):
+                    print(f'Seleccione una Sucursal para Devolver su libro')
+                    administracion.listado_sucursales()
+                    opcion_mostrar = int(input('\nIngrese una opcion entre las dadas: '))
+                    system("cls")
+                #DATO SUCURSAL ELEGIDA    
+                opcion_mostrar = opcion_mostrar - 1
+                system("cls")
+
+                usuario_a_retirar = None
+                usuario_registrado = False
+                iterador = 0
+                posicion_usuario_en_lista = 0
+                print(f'-------- Ingrese Su Nombre y Apellido (como Figura en su Registro) --------')
+                nombre = input('\nIngrese su nombre de Usuario: ')
+                apellido = input('\nIngrese su apellido de Usuario: ')
+                for usuario in administracion.lista_sucursales[opcion_mostrar].usuarios:
+                    if usuario.apellido == apellido and usuario.nombre == nombre:
+                        usuario_registrado = True
+                        usuario_a_retirar = usuario
+                    else:
+                        iterador = iterador + 1
+
+                if usuario_registrado == True:
+                    system("cls")
+                    libros_por_titulo = 0
+                    #TENGO QUE FIJARME EN LA LISTA DE RETIRO DEL USUARIO, NO EN LA LISTA DE LIBROS DE LA SUCURSAL
+                    for libro in administracion.lista_sucursales[opcion_mostrar].usuarios[posicion_usuario_en_lista].libros_retirados:
+                        libros_por_titulo = libros_por_titulo + 1
+
+                    opcion_retirar = 0
+                    while(opcion_retirar < 1 or opcion_retirar > libros_por_titulo):
+                        print(f'---------- Seleccione un Libro a Devolver ----------')
+                        administracion.lista_sucursales[opcion_mostrar].usuarios[posicion_usuario_en_lista].retornar_lista_libros_formato_menu()
+                        opcion_retirar = int(input('\nIngrese una opcion entre las dadas: '))
+                        system("cls")
+                    opcion_retirar = opcion_retirar - 1
+
+                    administracion.lista_sucursales[opcion_mostrar].devolver_libro(libro_retirar,usuario_a_retirar)
+                    #administracion.lista_sucursales[0].devolver_libro(libro_retirar,administracion.lista_sucursales[0].usuarios[0])
+
+                else:
+                    system("cls")
+                    print(f'El Usuario Ingresado no se encuentra Registrado en esta Sucursal, por ende no se puede devolver su libro')
+
+                
+                """ orden_libro_retirar = 0
+                libro_devolver=None
                 for key in administracion.lista_sucursales[0].lista_libros:
                     if orden_libro_retirar == 1:
-                        libro_retirar = key
-                    orden_libro_retirar = orden_libro_retirar + 1
+                        libro_devolver = key
+                    orden_libro_retirar = orden_libro_retirar + 1 """
                 
                 #ejemplo de retiro del 2do libro de la lista de Libros de la Sucursal realizado por el 1er Usuario de la Lista de Usuarios de la Sucursal
 
                 #RETIRAR Y DEVOLVER LIBROS DE FORMA INDIVIDUAL!!!!!!!!!!!!!!!!
                 
-                administracion.lista_sucursales[0].retirar_libro([libro_retirar],administracion.lista_sucursales[0].usuarios[0])
-                pass
-
+                # administracion.lista_sucursales[0].devolver_libro(libro_retirar,administracion.lista_sucursales[0].usuarios[0])
 
         if(opcion == 5):
             system("cls")
