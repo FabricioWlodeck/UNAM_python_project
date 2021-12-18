@@ -5,7 +5,6 @@ class Libro():
         self.__autor = autor
         self.__edicion = edicion
         self.__tipo = tipo
-        self.__unidades_prestadas = 0
         self.__fecha_devolucion = None
         self.__interes_atraso = 15
 
@@ -40,14 +39,6 @@ class Libro():
     @tipo.setter
     def tipo(self, value):
         self.__tipo = value
-
-    @property
-    def unidades_prestadas(self):
-        return self.__unidades_prestadas
-
-    @unidades_prestadas.setter
-    def unidades_prestadas(self, value):
-        self.__unidades_prestadas = value
 
     @property
     def fecha_devolucion(self):

@@ -1,7 +1,5 @@
 from usuario import Usuario
 from libro import Libro
-from suscripcion_alumno import Suscripcion_alumno
-from suscripcion_estandar import Suscripcion_estandar
 from empleado import Empleado
 import datetime
 
