@@ -1,6 +1,7 @@
 # 📚 PUBLIC LIBRARY OF MISIONES 📚
 ## Descripcion
-Proyecto desarrollado en **Python** en busca un programa para llevar un control sobre las sucursales, prestamos de libros y stock de los mismos, empleados y usuarios con sus respectivas suscripciones  por parte de un sistema de bibliotecas públicas para cada localidad de la provincia. 
+Proyecto desarrollado en **Python** en busca un programa para llevar un control sobre las sucursales, prestamos de libros y stock de los mismos, empleados y usuarios con sus respectivas suscripciones  por parte de un sistema de bibliotecas públicas para cada localidad de la provincia.
+Se ejecuta en consola y los datos pueden ser cargados, editados y eliminados a través de esta.
 ## Requerimientos
 - [X] Registro, eliminacion y control de sucursales.
 - [X] Lista de Sucursales, mostrando ubicacion y cantidad usuario.
